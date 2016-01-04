@@ -1,0 +1,35 @@
+$header_hight: 40;
+
+#header,#spacer {
+  height: #{$header_hight}px;
+  width: 100%;
+}
+
+#header {
+  position: fixed;
+  background-color: burlywood;
+  border-bottom: 1px solid black;
+  ol {
+    display: inline-block;
+    li{
+      display: inline-block;
+    }
+  }
+}
+
+[data-href]:hover{
+  cursor: pointer;
+  background-color: darkgray;
+}
+
+table{
+  border-collapse: collapse;
+}
+
+table,tr,td {
+  border: 1px solid black;
+}
+
+td.size {
+  text-align: right;
+}

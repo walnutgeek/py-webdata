@@ -1,0 +1,6 @@
+<ol>
+    <% _.forEach(file.enumerate(),function(e){ %>
+        <li data-href="<%- e.path() %>"><%- e.name %></li>
+    <% }); %>
+</ol>
+<a href="/.raw<%- file.path() %>"><span class="glyphicon glyphicon-save"></span></a>

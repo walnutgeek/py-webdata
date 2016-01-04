@@ -1,0 +1,69 @@
+{
+  "name": "py-webdata",
+  "version": "0.0.1",
+  "description": "WebData Python webcomponents",
+  "main": "js/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "test": "mocha",
+    "build": "webpack",
+    "zip": "cd dist && zip wdf.zip wdf*",
+    "copy_public": "docco ./docs/*md -o dist && cp ./node_modules/mocha/mocha.css dist/ ",
+    "cover": "istanbul cover _mocha -- -R spec",
+    "codecov": "codecov < ./dist/coverage.json",
+    "docs": "docco ./wdf/*js ./docs/*md -t docs/docco.jst -c docs/docco.css -o dist",
+    "gh": "npm run docs && gh-pages -d dist/",
+    "dev": "webpack-dev-server --config webpack.config.js",
+    "debug": "node-debug -p 3333 ./node_modules/.bin/_mocha",
+    "all": "npm-run-all clean build test zip copy_public docs cover",
+    "travis": "npm-run-all clean build test cover codecov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:walnutgeek/py-webdata.git"
+  },
+  "keywords": [
+    "dataframe",
+    "pandas",
+    "data",
+    "dataset",
+    "R",
+    "SAS",
+    "python"
+  ],
+  "files": [
+    "README.md",
+    "js/*.js"
+  ],
+  "author": "wg@walnutgeek.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/walnutgeek/py-webdata/issues"
+  },
+  "homepage": "https://github.com/walnutgeek/py-webdata#readme",
+  "devDependencies": {
+    "codecov": "^1.0.1",
+    "copy-webpack-plugin": "^0.3.3",
+    "docco": "^0.7.0",
+    "gh-pages": "^0.5.0",
+    "istanbul": "^0.4.0",
+    "jsdom": "^7.2.2",
+    "jshint": "^2.8.0",
+    "jshint-loader": "^0.8.3",
+    "mocha": "^2.3.4",
+    "mocha-jsdom": "^1.0.0",
+    "mocha-lcov-reporter": "^1.0.0",
+    "mocha-loader": "^0.7.1",
+    "npm-run-all": "^1.3.3",
+    "rimraf": "^2.4.3",
+    "uglify-loader": "^1.2.0",
+    "webpack": "^1.12.6",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "wdf": "0.0.3"
+  }
+}

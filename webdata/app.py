@@ -11,7 +11,7 @@ import tornado.web
 import tornado.template
 import tornado.ioloop
 import tornado.httpserver
-from webdata import Mount,File
+from webdata import Mount,FileNotFound
 
 logging.basicConfig(level=logging.INFO)
 
@@ -34,21 +34,24 @@ class MountHandler(tornado.web.RequestHandler):
         self.mount = mount
 
     def get(self, path):
-        file = self.mount.file(path)
-        mime,enc = file.mime_enc()
-        if mime and enc:
-            self.set_header('Content-Type', '{mime}; charset="{enc}"'.format(**locals()))
-        elif mime:
-            self.set_header('Content-Type', mime)
-        content = file.render()
-        if isinstance(content, str) or isinstance(content, unicode):
-            self.write(content)
-        else:
-            while 1:
-                chunk = content.read(64*1024)
-                if not chunk:
-                    break
-                self.write(chunk)
+        try:
+            file = self.mount.file(path)
+            mime,enc = file.mime_enc()
+            if mime and enc:
+                self.set_header('Content-Type', '{mime}; charset="{enc}"'.format(**locals()))
+            elif mime:
+                self.set_header('Content-Type', mime)
+            content = file.render()
+            if isinstance(content, str) or isinstance(content, unicode):
+                self.write(content)
+            else:
+                while 1:
+                    chunk = content.read(64*1024)
+                    if not chunk:
+                        break
+                    self.write(chunk)
+        except FileNotFound:
+            raise tornado.web.HTTPError(404)
         self.finish()
 
 

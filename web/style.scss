@@ -1,5 +1,12 @@
 $header_hight: 40;
 
+#logo{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: #{$header_hight}px;
+}
+
 #header,#spacer {
   height: #{$header_hight}px;
   width: 100%;
@@ -30,6 +37,6 @@ table,tr,td {
   border: 1px solid black;
 }
 
-td.size {
+td.numbers {
   text-align: right;
 }

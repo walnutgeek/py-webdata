@@ -1,0 +1,12 @@
+<table>
+    <% file.wdf.apply(function(row){ %>
+    <tr>
+        <% _.forEach(file.wdf.columnSet.byIndex,function(col){
+            var attrs = file.format_attrs(row,col);
+            var value = file.format_value(row,col);
+        %>
+        <td<%= attrs %>><%- value %></td>
+        <% }); %>
+    </tr>
+    <% }); %>
+</table>

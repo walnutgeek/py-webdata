@@ -7,17 +7,11 @@ var _ = require('lodash');
 var $ = window.jQuery = window.$ = require("jquery");
 require("bootstrap/dist/js/bootstrap");
 
+var path_template = _.template(require('raw!./templates/path.html'));
+
 var WebFile = require('./WebFile');
-var wdf = require('wdf');
 
 var current_file;
-
-var templates = {
-    path: _.template(require('raw!./templates/path.html')),
-    dir: _.template(require('raw!./templates/dir.html')),
-    file: _.template(require('raw!./templates/file.html')),
-};
-
 window.onpopstate = function(event){
     navigate(event.state.path);
 };
@@ -29,25 +23,18 @@ function navigate(path, push_history){
         window.history.pushState({path: path},current_file.name,current_file.path());
     }
     document.title = current_file.name;
-    $('#header').html(templates.path({
+    $('#header').html(path_template({
         file: current_file
     }));
     var url = '/.raw' + current_file.path() ;
+    $('#main').html('');
     $.ajax({
         url: url,
-        success: function(data){
+        dataType: 'text',
+        success: function(data,status,res){
             if(loading == current_file){
-                if( current_file.if_dir() ){
-                    $('#main').html( templates.dir({
-                        df: wdf.DataFrame.parse_wdf(data),
-                        file: current_file,
-                    }) );
-                }else{
-                    $('#main').html( templates.file({
-                        content: data,
-                        file: current_file,
-                    }) );
-                }
+                current_file.setContent(res,status, data);
+                $('#main').html( current_file.render() );
             }
         }
     });

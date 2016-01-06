@@ -2,8 +2,13 @@ var path = require("path");
 var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const FILE_LOCATION = 'name=files/[name].[ext]';
+
 function abs_dir(r) { return path.resolve(__dirname, r) ; }
-function url_loader(mime) { return 'url?limit=10000&name=files/[name].[ext]&minetype=' + mime ; }
+
+function url_loader(mime) {
+    return 'url?limit=10000&' + FILE_LOCATION +
+        '&minetype=' + mime ; }
 
 var name = 'webdata';
 
@@ -32,9 +37,9 @@ function cfg(entry_point, out_file){
           { test: /\.css$/,
               loader: 'style?minimize!css' },
           { test: /\.(png|jpg)$/,
-              loader: 'file?name=files/[name].[ext]' },
+              loader: 'file?' + FILE_LOCATION },
           { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-              loader: "file?name=files/[name].[ext]" },
+              loader: "file?" + FILE_LOCATION },
           { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
               loader: url_loader("application/font-woff") },
           { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,

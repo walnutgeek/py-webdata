@@ -1,6 +1,7 @@
-require("./style.scss");
 require("bootstrap/dist/css/bootstrap.css");
 require("bootstrap/dist/css/bootstrap-theme.css");
+require('font-awesome/scss/font-awesome.scss');
+require("./style.scss");
 
 var _ = require('lodash');
 
@@ -41,6 +42,30 @@ function navigate(path, push_history){
 }
 
 $(function(){
+    var pressed = false;
+    var colname, startX, startWidth;
+
+    $(document).on('mousedown','[data-resize-col]',function(e) {
+        colname = $(this).attr('data-resize-col');
+        pressed = true;
+        startX = e.pageX;
+        startWidth = $(this).before().width() ;
+        console.log(colname);
+
+    });
+
+    $(document).mousemove(function(e) {
+        if(pressed) {
+            $('[data-size-col="'+colname+'"]')
+                .width(startWidth+(e.pageX-startX));
+        }
+    });
+
+    $(document).mouseup(function() {
+        if(pressed) {
+            pressed = false;
+        }
+    });
     $(document).on('click','[data-href]',function(e){
         navigate(e.target.getAttribute('data-href'),true);
     });

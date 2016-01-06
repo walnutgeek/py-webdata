@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "marked": "^0.3.5",

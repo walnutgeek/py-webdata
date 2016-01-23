@@ -2,7 +2,7 @@ from __future__ import print_function
 import os,mimetypes,functools,json
 
 FILE_COLUMNS = [
-    { 'name': 'filename', 'type': 'string' },
+    { 'name': 'filename', 'type': 'link' },
     { 'name': 'size' , 'type': 'number' },
     { 'name': 'type', 'type': 'string' },
     { 'name': 'mime', 'type': 'string' },
@@ -56,6 +56,11 @@ class File:
         return 'dir' if self.isdir() else 'file'
 
     @_cacheable
+    def link(self):
+        l = self.path + '/' if self.isdir() else self.path
+        return l if l[0:1] == '/' else '/'+l
+
+    @_cacheable
     def details(self):
         return None
 
@@ -75,7 +80,7 @@ class File:
 
     @_cacheable
     def record(self):
-        return [ self.filename(), self.size(), self.type(),
+        return [ '['+self.filename()+']('+self.link()+')', self.size(), self.type(),
                  self.mime(), self.details() ]
 
     def render(self):

@@ -1,7 +1,9 @@
 require("bootstrap/dist/css/bootstrap.css");
 require("bootstrap/dist/css/bootstrap-theme.css");
 require('font-awesome/scss/font-awesome.scss');
+require("wdf/wdf/wdf_view.css");
 require("./style.scss");
+
 
 var _ = require('lodash');
 
@@ -35,39 +37,22 @@ function navigate(path, push_history){
         success: function(data,status,res){
             if(loading == current_file){
                 current_file.setContent(res,status, data);
-                $('#main').html( current_file.render() );
+                var html = current_file.render();
+                if( !_.isNull(html) ){
+                    $('#main').html(html);
+                }
             }
         }
     });
 }
 
 $(function(){
-    var pressed = false;
-    var colname, startX, startWidth;
-
-    $(document).on('mousedown','[data-resize-col]',function(e) {
-        colname = $(this).attr('data-resize-col');
-        pressed = true;
-        startX = e.pageX;
-        startWidth = $(this).before().width() ;
-        console.log(colname);
-
-    });
-
-    $(document).mousemove(function(e) {
-        if(pressed) {
-            $('[data-size-col="'+colname+'"]')
-                .width(startWidth+(e.pageX-startX));
-        }
-    });
-
-    $(document).mouseup(function() {
-        if(pressed) {
-            pressed = false;
-        }
-    });
     $(document).on('click','[data-href]',function(e){
         navigate(e.target.getAttribute('data-href'),true);
+    });
+    $(document).on('click','a.wdf_link',function(e){
+        navigate(e.target.getAttribute('href'),true);
+        return false;
     });
     navigate(window.location.pathname);
 });

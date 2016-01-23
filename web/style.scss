@@ -1,5 +1,4 @@
 $header_hight: 40;
-$table_header: 25;
 
 #logo{
   position: fixed;
@@ -16,17 +15,6 @@ $table_header: 25;
   width: 100%;
 }
 
-#tableheader,#tablespacer {
-  height: #{$table_header}px;
-  width: 100%;
-}
-
-#tableheader {
-  top: #{$header_hight}px;
-  left: 0px;
-  position: fixed;
-  background-color: lightgray;
-}
 #header {
   position: fixed;
   background-color: lightskyblue;
@@ -42,35 +30,3 @@ $table_header: 25;
   }
 }
 
-[data-href]:hover{
-  cursor: pointer;
-  background-color: darkgray;
-}
-
-table{
-  table-layout:fixed;
-  border-collapse: collapse;
-}
-
-table,tr,td,th {
-  border: 1px solid black;
-}
-
-table td, table th {
-  padding: 2px;
-  white-space: nowrap;
-  .masker{
-      overflow:hidden;
-      width: 100%;
-  }
-}
-
-td.numbers {
-  text-align: right;
-}
-
-[data-resize-col]{
-  font-size: #{ ($table_header - 5)}px;
-  cursor: col-resize;
-  float: right;
-}

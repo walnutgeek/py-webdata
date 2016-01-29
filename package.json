@@ -4,19 +4,13 @@
   "description": "WebData Python webcomponents",
   "main": "js/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "test": "mocha",
+    "clean": "rimraf webdata/app",
     "build": "webpack",
-    "zip": "cd dist && zip wdf.zip wdf*",
-    "copy_public": "docco ./docs/*md -o dist && cp ./node_modules/mocha/mocha.css dist/ ",
-    "cover": "istanbul cover _mocha -- -R spec",
-    "codecov": "codecov < ./dist/coverage.json",
-    "docs": "docco ./wdf/*js ./docs/*md -t docs/docco.jst -c docs/docco.css -o dist",
-    "gh": "npm run docs && gh-pages -d dist/",
+    "test_reg": "python setup.py register -r pypitest",
+    "test_up": "python setup.py sdist upload -r pypitest",
     "dev": "webpack-dev-server --config webpack.config.js",
     "debug": "node-debug -p 3333 ./node_modules/.bin/_mocha",
-    "all": "npm-run-all clean build test zip copy_public docs cover",
-    "travis": "npm-run-all clean build test cover codecov"
+    "test_pub": "npm-run-all clean build test_reg test_up"
   },
   "repository": {
     "type": "git",

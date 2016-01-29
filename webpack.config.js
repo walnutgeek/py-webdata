@@ -63,5 +63,5 @@ function cfg(entry_point, out_file){
 
 module.exports = [
   cfg("./web/index.js",name + ".js"),
-  cfg("mocha!./web/tests.js","testBundle.js")
+  //cfg("mocha!./web/tests.js","testBundle.js")
 ];

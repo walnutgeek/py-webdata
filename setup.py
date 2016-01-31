@@ -18,14 +18,16 @@ try:
 except:
   pass
 
+v = pkg['version']+rc
 setup(
   name = 'webdata',
   packages = ['webdata'],
-  version = pkg['version']+rc,
+  version = v,
   description = pkg['description'],
   author = 'Walnut Geek',
   author_email = 'wg@walnutgeek.com',
   url = 'https://github.com/walnutgeek/py-webdata',
+  download_url = 'https://pypi.python.org/packages/source/w/webdata/webdata-%s.tar.gz' % v,
   keywords = pkg['keywords'],
   install_requires=['tornado'],
   tests_require=['nose'],

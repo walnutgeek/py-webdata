@@ -2,7 +2,7 @@ var path = require("path");
 var webpack = require("webpack");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const FILE_LOCATION = 'name=files/[name].[ext]';
+const FILE_LOCATION = 'name=[name].[ext]';
 
 function abs_dir(r) { return path.resolve(__dirname, r) ; }
 

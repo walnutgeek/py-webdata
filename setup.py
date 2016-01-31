@@ -1,17 +1,41 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
+import json
+import os
+
+
+def file(n):
+  return os.path.join(os.path.dirname(__file__), n)
+
+
+pkg = json.load(open(file('package.json')))
+
+rc=''
+try:
+  num = open(file('rc.txt')).read()
+  num = int(num)+1 if num else 1
+  open(file('rc.txt'),'w').write('%d'%num)
+  rc = 'rc%d' % num
+except:
+  pass
+
 setup(
   name = 'webdata',
   packages = ['webdata'],
-  version = '0.1',
-  description = 'Publish data on web',
+  version = pkg['version']+rc,
+  description = pkg['description'],
   author = 'Walnut Geek',
   author_email = 'wg@walnutgeek.com',
   url = 'https://github.com/walnutgeek/py-webdata',
-  keywords = ['dataframe', 'dataset', 'pandas', 'SAS', 'R' ],
-  license='MIT',
-  package_data = {
-      '': ['app/*', 'app/*/*']
+  keywords = pkg['keywords'],
+  install_requires=['tornado'],
+  tests_require=['nose'],
+  entry_points={
+    'console_scripts': [
+        'webdata = webdata.app:main',
+    ],
   },
+  license='MIT',
+  package_data = { '': ['app/*'] },
   classifiers=[
     # How mature is this project? Common values are
     #   3 - Alpha

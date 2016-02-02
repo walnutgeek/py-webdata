@@ -1,7 +1,6 @@
 var _ = require("lodash");
 var wdf = require('wdf');
 var WebFile = wdf.WebPath ;
-
 var templates = {
      file: _.template(require('raw!./templates/file.html')),
 };
@@ -12,6 +11,9 @@ WebFile.prototype.setContent=function(res,status,data){
     this.content = data;
 };
 
+
+var interval = null ;
+var frame_path = null ;
 WebFile.renderers = {
     CACHE_WDF: function(file){
         if( file.dir || file.extension() === 'wdf' || file.mime === 'text/wdf' ){
@@ -30,7 +32,18 @@ WebFile.renderers = {
     },
     HTML: function(file){
         if( file.extension() === 'htm' || file.extension() === 'html' || file.mime === 'text/html' ){
-            return file.content ;
+            frame_path = null;
+            interval = setInterval(function(){
+                var html_frame = document.getElementById("html_frame");
+                if(html_frame){
+                    var p = html_frame.contentWindow.location.pathname;
+                    if(p && p !== frame_path){
+                        frame_path = p ;
+                        console.log(frame_path);
+                    }
+                }
+            },500);
+            return '<iframe id="html_frame" src="/.raw'+ file.path() +'" />' ;
         }
     },
     WDF: function(file){
@@ -47,6 +60,10 @@ WebFile.prototype.if_loaded=function(){
 };
 
 WebFile.prototype.render=function(){
+    if(interval){
+        clearInterval(interval);
+        interval = null ;
+    }
     for(var name in WebFile.renderers){
         if(!WebFile.renderers.hasOwnProperty(name))
             continue;

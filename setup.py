@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import json
 import os
 
@@ -19,6 +19,8 @@ except:
   pass
 
 v = pkg['version']+rc
+down = 'https://pypi.python.org/packages/source/w/webdata/webdata-%s.tar.gz' % v
+
 setup(
   name = 'webdata',
   packages = ['webdata'],
@@ -27,7 +29,7 @@ setup(
   author = 'Walnut Geek',
   author_email = 'wg@walnutgeek.com',
   url = 'https://github.com/walnutgeek/py-webdata',
-  download_url = 'https://pypi.python.org/packages/source/w/webdata/webdata-%s.tar.gz' % v,
+  download_url = down,
   keywords = pkg['keywords'],
   install_requires=['tornado'],
   tests_require=['nose'],

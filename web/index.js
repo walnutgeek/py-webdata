@@ -45,13 +45,24 @@ function navigate(path, push_history){
         }
     });
 }
+function findAttribute(e,attr_name,depth){
+    depth = depth || 3 ;
+    var v ;
+    for (var i = 0 ; i < depth ; i++){
+        v = e.getAttribute(attr_name);
+        if( v != null ){
+            return v;
+        }
+        e = e.parentElement;
+    }
+}
 
 $(function(){
     $(document).on('click','[data-href]',function(e){
-        navigate(e.target.getAttribute('data-href'),true);
+        navigate(findAttribute(e.target,'data-href'),true);
     });
     $(document).on('click','a.wdf_link',function(e){
-        navigate(e.target.getAttribute('href'),true);
+        navigate(findAttribute(e.target,'href'),true);
         return false;
     });
     navigate(window.location.pathname);

@@ -6,6 +6,7 @@ require("./style.scss");
 
 
 var _ = require('lodash');
+var u$ = require('wdf').utils;
 
 var $ = window.jQuery = window.$ = require("jquery");
 require("bootstrap/dist/js/bootstrap");
@@ -19,16 +20,19 @@ window.onpopstate = function(event){
     navigate(event.state.path);
 };
 
-function navigate(path, push_history){
+function navigate(path, stateAction, reload){
+    reload = _.isUndefined(reload) ?  true : reload ;
     current_file = new WebFile(path);
     var loading = current_file;
-    if(push_history){
-        window.history.pushState({path: path},current_file.name,current_file.path());
+    if(history){
+        var method =  'replace' === stateAction ? 'replaceState' : 'pushState';
+        window.history[method]({path: path},current_file.name,current_file.path());
     }
     document.title = current_file.name;
-    $('#header').html(path_template({
+    $('#header').html( path_template({
         file: current_file
     }));
+    if( ! reload ) return;
     var url = '/.raw' + current_file.path() ;
     $('#main').html('');
     $.ajax({
@@ -45,12 +49,13 @@ function navigate(path, push_history){
         }
     });
 }
+
 function findAttribute(e,attr_name,depth){
     depth = depth || 3 ;
     var v ;
     for (var i = 0 ; i < depth ; i++){
         v = e.getAttribute(attr_name);
-        if( v != null ){
+        if( ! u$.isNullish(v) ){
             return v;
         }
         e = e.parentElement;
@@ -58,6 +63,10 @@ function findAttribute(e,attr_name,depth){
 }
 
 $(function(){
+    $('#header').on('call_navigate',function(e){
+        var d = e.originalEvent.detail;
+        navigate(d.path, d.stateAction, d.reload );
+    });
     $(document).on('click','[data-href]',function(e){
         navigate(findAttribute(e.target,'data-href'),true);
     });

@@ -34,13 +34,23 @@ WebFile.renderers = {
         if( file.extension() === 'htm' || file.extension() === 'html' || file.mime === 'text/html' ){
             frame_path = null;
             interval = setInterval(function(){
-                var html_frame = document.getElementById("html_frame");
-                if(html_frame){
-                    var p = html_frame.contentWindow.location.pathname;
+                var p ;
+                var iframe = document.getElementById("html_frame");
+                if(iframe){
+                    try{
+                        p = iframe.contentWindow.location.pathname;
+                    }catch(ignore){}
                     if(p && p !== frame_path){
-                        frame_path = p ;
-                        console.log(frame_path);
+                        if( p.indexOf('/.raw')===0 ){
+                            var header = document.getElementById("header");
+                            header.dispatchEvent( new CustomEvent('call_navigate', { detail: {
+                                path: p.substring(5),
+                                stateAction: 'replace',
+                                reload: false
+                            }}));
+                        }
                     }
+                    frame_path = p ;
                 }
             },500);
             return '<iframe id="html_frame" src="/.raw'+ file.path() +'" />' ;

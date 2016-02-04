@@ -49,7 +49,7 @@ class MountHandler(tornado.web.RequestHandler):
             elif mime:
                 self.set_header('Content-Type', mime)
             content = file.render()
-            if isinstance(content, str) or isinstance(content, unicode):
+            if isinstance(content, basestring) :
                 self.write(content)
             else:
                 while 1:

@@ -6,6 +6,7 @@ import os
 import sys
 import logging
 import signal
+from six import string_types
 
 import tornado.web
 import tornado.template
@@ -49,7 +50,7 @@ class MountHandler(tornado.web.RequestHandler):
             elif mime:
                 self.set_header('Content-Type', mime)
             content = file.render()
-            if isinstance(content, basestring) :
+            if isinstance(content, string_types):
                 self.write(content)
             else:
                 while 1:

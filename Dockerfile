@@ -1,0 +1,1 @@
+FROM sonarsource/local-travis

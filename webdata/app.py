@@ -17,15 +17,22 @@ logging.basicConfig(level=logging.INFO)
 
 app_dir = os.path.join(os.path.dirname(__file__),'app')
 
-class IndexHandler(tornado.web.RequestHandler):
-    SUPPORTED_METHODS = ['GET']
 
-    def get(self, path):
-        index = os.path.join(app_dir, 'index.html')
-        with open(index, 'rb') as f:
-            self.write(f.read())
-        self.finish()
+def create_handler(get_content):
 
+    class Handler(tornado.web.RequestHandler):
+        SUPPORTED_METHODS = ['GET']
+
+        def get(self, path):
+            self.write(get_content())
+            self.finish()
+    return Handler
+
+
+def get_index():
+    index = os.path.join(app_dir, 'index.html')
+    with open(index, 'rb') as f:
+        return f.read()
 
 class MountHandler(tornado.web.RequestHandler):
     SUPPORTED_METHODS = ['GET']
@@ -59,6 +66,19 @@ def stop_server(signum, frame):
     tornado.ioloop.IOLoop.instance().stop()
     logging.info('Stopped!')
 
+def shutdown(port,do_shutdown):
+    try:
+        import urllib2
+        response = urllib2.urlopen('http://localhost:%d/.pid' % (port,))
+        pid = int(response.read())
+        logging.info('Stopping %d' % pid)
+        os.kill(pid,signal.SIGINT)
+        if not do_shutdown:
+            import time
+            time.sleep(2)
+    except:
+        pass
+
 
 def run_server(raw_mount, port):
     app_mount = Mount(app_dir)
@@ -66,7 +86,8 @@ def run_server(raw_mount, port):
     application = tornado.web.Application([
         (r'/\.app/(.*)$', MountHandler, {'mount': app_mount}),
         (r'/\.raw/(.*)$', MountHandler, {'mount': raw_mount}),
-        (r'(.*)$', IndexHandler,),
+        (r'/(\.pid)$', create_handler(lambda: '%d' % os.getpid()),),
+        (r'(.*)$', create_handler(get_index),),
     ])
     signal.signal(signal.SIGINT, stop_server)
     http_server = tornado.httpserver.HTTPServer(application)
@@ -75,16 +96,26 @@ def run_server(raw_mount, port):
     tornado.ioloop.IOLoop.instance().start()
 
 
+def _args_parser():
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Run webdata server')
+    parser.add_argument('--port', metavar='N', type=int, nargs='?',
+                        default=7532, help='a port to listen')
+    parser.add_argument('--dir', metavar='dir', nargs='?',
+                        default='.', help='a directory to publish')
+    parser.add_argument('--shutdown', action='store_true',
+                        help='shutdown server')
+
+    return parser
+
 def main():
-    if sys.argv[2:] :
-        port = int(sys.argv[2])
-    else:
-        port = 7532
-    current_path = '.'
-    if sys.argv[1:] :
-        current_path = sys.argv[1]
-    raw_mount = Mount(current_path)
-    run_server(raw_mount, port)
+    parser = _args_parser()
+    args = parser.parse_args()
+    raw_mount = Mount(args.dir)
+    shutdown(args.port,args.shutdown)
+    if not args.shutdown:
+        run_server(raw_mount, args.port)
 
 if __name__ == '__main__':
     main()

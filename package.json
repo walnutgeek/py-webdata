@@ -1,10 +1,10 @@
 {
   "name": "py-webdata",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Publish data on web",
   "main": "js/index.js",
   "scripts": {
-    "clean": "rimraf webdata/app htmlcov dist app.log .coverage*",
+    "clean": "rimraf webdata/app htmlcov dist *.log .coverage webdata.egg-info",
     "build": "webpack",
     "test_reg": "python setup.py register -r pypitest",
     "test_up": "python setup.py sdist upload -r pypitest",
@@ -17,7 +17,7 @@
     "nose": "coverage run -p -m nose",
     "cover" : "coverage combine && coverage report -m && coverage html" ,
     "sleep": "sleep 1",
-    "test": "npm-run-all clean build start sleep ls nose stop sleep stop cover",
+    "test": "npm-run-all clean build start sleep start sleep ls nose stop sleep stop cover",
     "test_pub": "npm-run-all clean build test_reg test_up",
     "live_pub": "npm-run-all clean build live_reg live_up"
   },

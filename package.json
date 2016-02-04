@@ -15,7 +15,8 @@
     "stop": "coverage run -p -m webdata.app --shutdown",
     "nose": "coverage run -p -m nose",
     "cover" : "coverage combine && coverage report -m && coverage html" ,
-    "test": "npm-run-all clean build start nose stop cover",
+    "sleep": "sleep 1",
+    "test": "npm-run-all clean build start sleep nose stop sleep stop cover",
     "test_pub": "npm-run-all clean build test_reg test_up",
     "live_pub": "npm-run-all clean build live_reg live_up"
   },

@@ -14,4 +14,4 @@ script:
 after_success:
   - codecov
 after_failure:
-  - cut app.log
+  - cat app.log

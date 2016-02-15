@@ -15,7 +15,7 @@
     "start": "coverage run -p -m webdata.app > app.log 2>&1 &",
     "stop": "coverage run -p -m webdata.app --shutdown",
     "nose": "coverage run -p -m nose",
-    "cover" : "coverage combine && coverage report -m && coverage html" ,
+    "cover": "coverage combine && coverage report -m && coverage html",
     "sleep": "sleep 1",
     "test": "npm-run-all clean build start sleep start sleep ls nose stop sleep stop cover",
     "test_pub": "npm-run-all clean build test_reg test_up",
@@ -67,6 +67,7 @@
     "style-loader": "^0.13.0",
     "uglify-loader": "^1.2.0",
     "url-loader": "^0.5.7",
+    "wdf-loader": "0.0.2",
     "webpack": "^1.12.6",
     "webpack-dev-server": "^1.12.1"
   },

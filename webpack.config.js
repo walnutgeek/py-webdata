@@ -47,7 +47,9 @@ function cfg(entry_point, out_file){
           { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
               loader: url_loader("application/octet-stream") },
           { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-              loader: url_loader("image/svg+xml") }
+              loader: url_loader("image/svg+xml") },
+          { test: /\.json$/,
+              loader: 'json' },
       ],
     },
     plugins: [

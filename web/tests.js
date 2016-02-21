@@ -1,4 +1,5 @@
 require('mocha/mocha.css');
+var render = require('wdf!./render.wdf');
 var assert = require("assert");
 describe( 'tests', function() {
     it('WebFile', function () {

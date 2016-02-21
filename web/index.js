@@ -1,12 +1,12 @@
 require("bootstrap/dist/css/bootstrap.css");
 require("bootstrap/dist/css/bootstrap-theme.css");
 require('font-awesome/scss/font-awesome.scss');
-require("wdf/wdf/wdf_view.css");
+require("wdf/wdf_view.css");
 require("./style.scss");
 
 
 var _ = require('lodash');
-var u$ = require('wdf').utils;
+var u$ = require('wdf/utils');
 
 var $ = window.jQuery = window.$ = require("jquery");
 require("bootstrap/dist/js/bootstrap");

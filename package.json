@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/walnutgeek/py-webdata#readme",
   "devDependencies": {
-    "codecov": "^1.0.1",
+    "codecov": "^3.6.5",
     "copy-webpack-plugin": "^0.3.3",
     "css-loader": "^0.23.1",
     "docco": "^0.7.0",
